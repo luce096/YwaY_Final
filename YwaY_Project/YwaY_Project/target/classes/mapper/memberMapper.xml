@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 회원관련 sql문 작성 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 1.parameterType은 생략가능하고, 명시할때는 1개 Type만 가능, 파라미터타입이 여러개인 경우 무조건 생략 2.parameterType이 
+	bean(DTO,Entity)인 경우 #{필드명} 3.parameterType이 map인 경우 #{key} 4.parameterType이 
+	변수인 경우 #{변수명} 5.1개 또는 그이상의 컬럼을 리턴할 경우 resultType='bean타입'명시해야 함. 6.List로 
+	반환시에도 bean or map 타입 명시함. -->
+<mapper namespace="www.YwaY.com.dao.IMemberDao">
+	<insert id="memberJoin">
+		INSERT INTO MEMBERINFO
+		VALUES(#{memberid},#{memberpw},#{email},#{summonername},#{idhint},#{idanswer},default)
+	</insert>
+
+	<update id="mModify" parameterType="member">
+      UPDATE MEMBERINFO SET
+      MEMBERPW = #{memberpw},EMAIL = #{email},SUMMONERNAME = #{summonername},IDHINT = #{idhint},IDANSWER = #{idanswer}
+      WHERE
+      MEMBERID = #{memberid}
+   </update>
+   
+	<select id="access" resultType="boolean">
+		SELECT COUNT(*) FROM mc
+		WHERE
+		MEMBERID=#{memberid} AND MEMBERPW=#{memberpw}
+	</select>
+
+	<select id="readMember" resultType="Member">
+		SELECT * FROM MEMBERINFO
+		WHERE MEMBERID=#{memberid}
+	</select>
+
+	<select id="idCheck" resultType="Member">
+		SELECT * FROM MEMBERINFO
+		WHERE
+		MEMBERID=#{memberid}
+	</select>
+
+	<select id="readSummonername" resultType="Member">
+		SELECT * FROM
+		MEMBERINFO
+		WHERE SUMMONERNAME=#{summonername} AND IDHINT=#{idhint} AND IDANSWER=#{idanswer}
+	</select>
+	
+	<!-- id 중복체크 -->
+	<select id="getIdInfo" resultType="Member">
+		SELECT * FROM MEMBERINFO
+		WHERE
+		MEMBERID=#{memberid}
+	</select>
+	
+	<select id="getSecurityPwd" resultType="String">
+		SELECT MEMBERPW FROM
+		MEMBERINFO WHERE
+		MEMBERID=#{memberid}
+	</select>
+	<select id="getreportinfo" resultType="Member">
+		SELECT * FROM MM
+		WHERE MEMBERID=#{memberid}
+	</select>
+	
+
+
+	<!-- 비밀번호 변경 -->
+	<update id="updatePw" parameterType="member">
+		UPDATE MEMBERINFO SET
+		MEMBERPW = #{memberpw} WHERE
+		MEMBERID = #{memberid}
+	</update>
+
+	<select id="getBlacklist" resultType="Blacklist" >
+	SELECT * FROM BLACKLIST
+	</select>
+
+	<delete id="blacklistdelete" parameterType="Blacklist">
+	DELETE BLACKLIST WHERE R_ID = #{r_id}
+	</delete>
+	
+	<delete id="userdelete" parameterType="Blacklist">
+	DELETE MEMBERINFO WHERE MEMBERID=#{r_id}
+	</delete>
+	
+	<update id="loginblock" >
+      UPDATE BLACKLIST SET
+      A_DATE = #{nextDayString}
+      WHERE
+      R_ID = #{r_id,jdbcType=VARCHAR}
+   </update>
+	
+	<select id="getTipList" resultType="ChampTip">
+	SELECT * FROM CHAMPTIP WHERE CT_MID = #{r_id}
+	</select>
+	
+	
+	<select id="getblackl" resultType="Blacklist">
+	SELECT * FROM BLACKLIST WHERE R_ID=#{r_id}
+	</select>
+	
+	<delete id="gDelete" parameterType="Blacklist">
+	DELETE CHAMPTIP WHERE CT_MID = #{r_id}
+	</delete>
+	
+	<select id="getuserupdateinfo" resultType="Member">
+	SELECT * FROM MEMBERINFO
+	</select>
+	
+	<update id="usergradeup" >
+      UPDATE MEMBERINFO SET
+      GRADE = '관리자'
+      WHERE
+      MEMBERID = #{memberid,jdbcType=VARCHAR}
+   </update>
+	
+	
+	<delete id="deladate">
+		DELETE BLACKLIST WHERE R_ID = #{memberid}
+	</delete>
+</mapper>

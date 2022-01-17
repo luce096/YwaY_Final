@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 챔피언관련 sql문 작성 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 1.parameterType은 생략가능하고, 명시할때는 1개 Type만 가능, 파라미터타입이 여러개인 경우 무조건 생략 2.parameterType이 
+	bean(DTO,Entity)인 경우 #{필드명} 3.parameterType이 map인 경우 #{key} 4.parameterType이 
+	변수인 경우 #{변수명} 5.1개 또는 그이상의 컬럼을 리턴할 경우 resultType='bean타입'명시해야 함. 6.List로 
+	반환시에도 bean or map 타입 명시함. -->
+<mapper namespace="www.YwaY.com.dao.IChampDao">
+	
+	<select id="getChampInfo" resultType="Champ">
+		SELECT ID, NAME FROM CHAMP WHERE NAME !='Noban' ORDER BY NAME
+	</select>
+
+	 <select id="getChampWinInfo" resultType="ChampWin">
+		SELECT * FROM champion_winrate
+	</select> 
+
+	<select id="getAllChampInfo" resultType="Champ">
+		SELECT * FROM all_lane ORDER BY NAME
+	</select>
+	
+	<select id="getTopChampInfo" resultType="Champ">
+		SELECT * FROM top ORDER BY NAME
+	</select>
+	
+	<select id="getJungleChampInfo" resultType="Champ">
+		SELECT * FROM jungle ORDER BY NAME
+	</select>
+	
+	<select id="getBotChampInfo" resultType="Champ">
+		SELECT * FROM bot ORDER BY NAME
+	</select>
+	
+	<select id="getSupChampInfo" resultType="Champ">
+		SELECT * FROM sup ORDER BY NAME
+	</select>
+	
+	<select id="getMidChampInfo" resultType="Champ">
+		SELECT * FROM middle ORDER BY NAME
+	</select>
+	
+	<select id="getSupPickChampInfo" resultType="Champ">
+		SELECT * FROM sup ORDER BY PICK desc
+	</select>
+	
+	<select id="getTopPickChampInfo" resultType="Champ">
+		SELECT * FROM top ORDER BY PICK desc
+	</select>
+	
+	
+	<select id="getJunglePickChampInfo" resultType="Champ">
+		SELECT * FROM jungle ORDER BY PICK desc
+	</select>
+	
+	
+	<select id="getMidPickChampInfo" resultType="Champ">
+		SELECT * FROM middle ORDER BY PICK desc
+	</select>
+	
+	<select id="getBotPickChampInfo" resultType="Champ">
+		SELECT * FROM bot ORDER BY PICK desc
+	</select>
+	
+	<select id="getJungleBanChampInfo" resultType="Champ">
+		SELECT * FROM jungle ORDER BY BAN_RATE desc
+	</select>
+	
+	<select id="getTopBanChampInfo" resultType="Champ">
+		SELECT * FROM top ORDER BY BAN_RATE desc
+	</select>
+	
+	<select id="getMidBanChampInfo" resultType="Champ">
+		SELECT * FROM middle ORDER BY BAN_RATE desc
+	</select>
+	
+	<select id="getBotBanChampInfo" resultType="Champ">
+		SELECT * FROM bot ORDER BY BAN_RATE desc
+	</select>
+	
+	<select id="getSupBanChampInfo" resultType="Champ">
+		SELECT * FROM sup ORDER BY BAN_RATE desc
+	</select>
+	
+	<select id="getChampDetail" resultType="Champ">
+		SELECT * FROM CHAMP WHERE NAME_E = #{name_e}
+	</select>
+
+	<select id="getChampSpell" resultType="ChampSpell">
+   <![CDATA[
+      SELECT * FROM (SELECT * FROM CHAMPINFO_SPELL WHERE CHAMPIONNAME = #{name_e} AND LANE=#{lane} ORDER BY CNT DESC) WHERE ROWNUM<=2
+      ]]>
+   </select>
+   <select id="getChampItem" resultType="ChampItem">
+   <![CDATA[
+      SELECT * FROM (SELECT * FROM CHAMPINFO_ITEM WHERE CHAMPIONNAME = #{name_e} AND LANE=#{lane} ORDER BY TOTAL_CNT DESC) WHERE ROWNUM<=1
+      ]]>
+   </select>
+   <select id="getChampItem_s" resultType="ChampItem">
+   <![CDATA[
+      SELECT * FROM (SELECT * FROM CHAMPINFO_ITEM_SHOES_TEST WHERE CHAMPIONNAME = #{name_e} AND LANE=#{lane} ORDER BY ITEM1_CNT DESC) WHERE ROWNUM<=5
+      ]]>
+   </select>
+   <select id="getChampRune" resultType="ChampRune">
+   <![CDATA[
+      SELECT * FROM (SELECT * FROM CHAMPINFO_RUNE WHERE CHAMPIONNAME = #{name_e} AND LANE=#{lane} ORDER BY CNT DESC) WHERE ROWNUM<=5
+      ]]>
+   </select>
+
+	
+
+	
+</mapper>
+
+

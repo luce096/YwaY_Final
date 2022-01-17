@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 게시판 관련 sql문 작성 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="www.YwaY.com.dao.IChampTipDao">
+	
+	<insert id="champTipInsert" parameterType="ChampTip">	<!-- insert할때는 parameterType="Reply" 생략가능 -->
+		INSERT INTO CHAMPTIP VALUES(CHAMPTIP_SEQ.NEXTVAL,#{ct_cpnum},#{ct_contents},#{ct_mid},default)
+	</insert>
+	
+	<select id="getChampTipList" resultType="ChampTip">
+		SELECT * FROM CTLIST WHERE CT_CPNUM=#{ct_cpnum}
+	</select>
+	
+	<insert id="userr">
+		INSERT INTO BLACKLIST VALUES(#{ct_mid},default,#{ct_contents},default)
+	</insert>
+	
+	
+</mapper>
